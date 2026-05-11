@@ -96,9 +96,9 @@ class ContextualBandit:
         has_error: bool,
         trace_len: int,
     ):
-        """Update arm with observed reward."""
+        """Update arm with observed reward. Auto-creates arm if not exists."""
         if failure_class not in self._arms:
-            return
+            self._arms[failure_class] = {}
 
         bucket = _context_bucket(step_ratio, prev_action, has_error, trace_len)
         if bucket not in self._arms[failure_class]:
@@ -108,15 +108,18 @@ class ContextualBandit:
         arms = self._arms[failure_class][bucket]
         arm = next((a for a in arms if a.intervention_id == intervention_id), None)
         if arm is None:
-            # Copy from another bucket
+            # Check other buckets first
             for b_arms in self._arms[failure_class].values():
                 source = next((a for a in b_arms if a.intervention_id == intervention_id), None)
                 if source:
                     arm = Arm(intervention_id=intervention_id, payload=source.payload)
                     arms.append(arm)
                     break
-        if arm:
-            arm.update(reward)
+            if arm is None:
+                # Brand new arm
+                arm = Arm(intervention_id=intervention_id, payload="")
+                arms.append(arm)
+        arm.update(reward)
 
     def get_stats(self, failure_class: str) -> list[dict]:
         """Get efficacy stats for all arms in a failure class."""

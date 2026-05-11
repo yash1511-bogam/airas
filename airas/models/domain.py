@@ -10,20 +10,20 @@ def new_id() -> str:
     return uuid4().hex[:12]
 
 
-class Project(BaseModel):
-    project_id: str = Field(default_factory=new_id)
-    name: str
-    api_key_hash: str = ""
-    tolerance: ToleranceConfig = Field(default_factory=lambda: ToleranceConfig())
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-
-
 class ToleranceConfig(BaseModel):
     min_danger_score: float = 0.3
     max_interventions_per_trace: int = 3
     cooldown_steps: int = 5
     auto_disable_threshold: float = 0.15
     acceptable_failure_rates: dict[str, float] = Field(default_factory=dict)
+
+
+class Project(BaseModel):
+    project_id: str = Field(default_factory=new_id)
+    name: str
+    api_key_hash: str = ""
+    tolerance: ToleranceConfig = Field(default_factory=ToleranceConfig)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
 class StoredAntigen(BaseModel):
