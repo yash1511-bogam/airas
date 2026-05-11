@@ -1,5 +1,10 @@
 # AIRAS — Adaptive Immune Runtime for Agent Systems
 
+[![CI/CD](https://github.com/yash1511-bogam/airas/actions/workflows/ci.yml/badge.svg)](https://github.com/yash1511-bogam/airas/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/airas-sdk)](https://pypi.org/project/airas-sdk/)
+
+**Website:** [airas.yashbogam.me](https://airas.yashbogam.me)
+
 > A runtime layer that observes failure patterns across populations of AI agent executions, learns abstract failure signatures, and preemptively prevents those failures from recurring.
 
 ## The Problem
