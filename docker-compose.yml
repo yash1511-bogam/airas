@@ -1,0 +1,79 @@
+services:
+  airas-api:
+    build: .
+    ports:
+      - "8100:8100"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://airas:airas@postgres:5432/airas
+      - REDIS_URL=redis://redis:6379/0
+      - QDRANT_URL=http://qdrant:6333
+      - API_HOST=0.0.0.0
+      - API_PORT=8100
+      - LOG_LEVEL=info
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    command: ["uvicorn", "airas.api.main:app", "--host", "0.0.0.0", "--port", "8100", "--workers", "2"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8100/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  airas-worker:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://airas:airas@postgres:5432/airas
+      - REDIS_URL=redis://redis:6379/0
+      - QDRANT_URL=http://qdrant:6333
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    command: ["python", "-m", "airas.workers.main"]
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=airas
+      - POSTGRES_PASSWORD=airas
+      - POSTGRES_DB=airas
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airas"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.0
+    volumes:
+      - qdrantdata:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:
+  redisdata:
+  qdrantdata:
