@@ -4,8 +4,10 @@ on:
   push:
     branches: [main]
     tags: ["v*"]
+    paths-ignore: ['frontend/**']
   pull_request:
     branches: [main]
+    paths-ignore: ['frontend/**']
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
