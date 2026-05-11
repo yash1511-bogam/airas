@@ -1,200 +1,175 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="AIRAS — Adaptive Immune Runtime for Agent Systems">
-<style>
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-  .hero { padding: 6rem 0 4rem; text-align: center; }
-  .hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.5rem; background: linear-gradient(135deg, #e4e4e7, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 1.25rem; color: var(--muted); max-width: 640px; margin: 0 auto 2.5rem; }
-  .badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-  .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 500; }
-  .badge--green { border-color: #166534; color: var(--green); }
-  .cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; }
-  .btn--primary { background: var(--accent); color: #fff; }
-  .btn--primary:hover { background: var(--accent-light); text-decoration: none; }
-  .btn--secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
-  .btn--secondary:hover { border-color: var(--accent); text-decoration: none; }
-  nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
-  nav .logo { font-weight: 700; font-size: 1.1rem; }
-  nav .links { display: flex; gap: 1.5rem; font-size: 0.9rem; }
-  section { padding: 5rem 0; border-top: 1px solid var(--border); }
-  section h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
-  section h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--accent-light); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-  .card h3 { margin-bottom: 0.5rem; }
-  .card p { color: var(--muted); font-size: 0.9rem; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 2rem 0; }
-  .stat { text-align: center; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
-  .stat .num { font-size: 2rem; font-weight: 800; color: var(--accent-light); }
-  .stat .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
-  .steps { counter-reset: step; margin-top: 2rem; }
-  .step { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start; }
-  .step::before { counter-increment: step; content: counter(step); background: var(--accent); color: #fff; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
-  .step-content h4 { font-weight: 600; margin-bottom: 0.25rem; }
-  .step-content p { color: var(--muted); font-size: 0.9rem; }
-  .install-block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-top: 2rem; }
-  .install-block h3 { margin-bottom: 1rem; }
-  .arch-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-top: 2rem; font-family: monospace; font-size: 0.8rem; line-height: 1.8; white-space: pre; overflow-x: auto; }
-  footer { padding: 3rem 0; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 0.85rem; }
-  footer a { color: var(--muted); }
-  .icon { width: 2.5rem; height: 2.5rem; margin-bottom: 0.75rem; }
-</style>
+<Base title="AIRAS — Failure Prevention for AI Agents">
 
-<div class="container">
-  <!-- Nav -->
-  <nav>
-    <div class="logo">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:inline;vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="10" stroke="#6366f1" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#818cf8" stroke-width="2" stroke-linecap="round"/></svg>
-      AIRAS
-    </div>
-    <div class="links">
-      <a href="#how-it-works">How It Works</a>
-      <a href="#install">Install</a>
-      <a href="https://github.com/yash1511-bogam/airas">GitHub</a>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <div class="hero">
-    <div class="badges">
-      <span class="badge badge--green">52% Prevention Rate</span>
-      <span class="badge badge--green">0% False Positives</span>
-      <span class="badge">7 Failure Patterns</span>
-      <span class="badge">&lt;50ms Latency</span>
-    </div>
-    <h1>Failure Prevention for AI Agents</h1>
-    <p>AIRAS observes how agents fail across thousands of executions, learns abstract failure patterns, and preemptively prevents them from recurring — before they manifest.</p>
-    <div class="cta-group">
-      <a href="#install" class="btn btn--primary">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1v10M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Get Started
+<header>
+  <div class="container">
+    <nav>
+      <a href="/" class="logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        AIRAS
       </a>
-      <a href="https://github.com/yash1511-bogam/airas" class="btn btn--secondary">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        View on GitHub
-      </a>
-    </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#install">Install</a>
+        <a href="https://github.com/yash1511-bogam/airas" class="nav-gh">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </nav>
   </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badges">
+        <span class="badge badge-green">52% Prevention Rate</span>
+        <span class="badge badge-green">0% False Positives</span>
+        <span class="badge">Open Source</span>
+      </div>
+      <h1>Failure prevention<br/>for AI agents</h1>
+      <p class="hero-sub">AIRAS learns from agent failures across your fleet, builds a pattern database, and prevents those failures before they happen — in real-time, at &lt;50ms.</p>
+      <div class="hero-cta">
+        <a href="#install" class="btn btn-primary">Get Started</a>
+        <a href="https://github.com/yash1511-bogam/airas" class="btn btn-ghost">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C3 2 2 2 2 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 1 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S6 17.22 6 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          View Source
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- Stats -->
-  <div class="stats">
-    <div class="stat"><div class="num">52%</div><div class="label">Failures Prevented</div></div>
-    <div class="stat"><div class="num">0%</div><div class="label">False Positives</div></div>
-    <div class="stat"><div class="num">96%</div><div class="label">Pattern Coverage</div></div>
-    <div class="stat"><div class="num">&lt;50ms</div><div class="label">Check Latency</div></div>
-  </div>
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat"><span class="stat-num">52%</span><span class="stat-label">Failures Prevented</span></div>
+        <div class="stat"><span class="stat-num">0%</span><span class="stat-label">False Positives</span></div>
+        <div class="stat"><span class="stat-num">96%</span><span class="stat-label">Pattern Coverage</span></div>
+        <div class="stat"><span class="stat-num">&lt;50ms</span><span class="stat-label">Check Latency</span></div>
+      </div>
+    </div>
+  </section>
 
-  <!-- What is AIRAS -->
-  <section>
-    <h2>What is AIRAS?</h2>
-    <p style="color:var(--muted);max-width:700px;">A runtime layer that sits between your AI agents and production. It learns from failures across all agent executions, builds a database of failure patterns, and prevents those patterns from recurring — automatically, in real-time.</p>
-    <div class="grid">
-      <div class="card">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        <h3>Population-Level Learning</h3>
-        <p>Every failure makes the system smarter for ALL users. Patterns learned from one agent immunize the entire fleet.</p>
-      </div>
-      <div class="card">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <h3>Preemptive Prevention</h3>
-        <p>Matches partial executions against known failure patterns BEFORE the failure manifests. Not debugging — preventing.</p>
-      </div>
-      <div class="card">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        <h3>Self-Improving</h3>
-        <p>Interventions evolve via LLM-generated mutations and contextual bandits. Prevention rate increases every day without human effort.</p>
-      </div>
-      <div class="card">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        <h3>Cross-Domain</h3>
-        <p>Works with coding agents, support agents, research agents, and data pipeline agents. Universal failure taxonomy transfers across domains.</p>
+  <!-- Features -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <span class="section-label">Capabilities</span>
+      <h2>Everything your agents need to stay reliable</h2>
+      <div class="bento">
+        <div class="bento-card bento-large">
+          <div class="bento-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Population-Level Learning</h3>
+          <p>Every failure across your entire agent fleet feeds into a shared pattern database. One agent's mistake immunizes all others.</p>
+        </div>
+        <div class="bento-card">
+          <div class="bento-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h3>Preemptive Prevention</h3>
+          <p>Matches partial executions against known patterns before failure manifests.</p>
+        </div>
+        <div class="bento-card">
+          <div class="bento-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3>Self-Improving</h3>
+          <p>Interventions evolve via LLM mutations and contextual bandits. Gets better every day.</p>
+        </div>
+        <div class="bento-card">
+          <div class="bento-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>Cross-Domain</h3>
+          <p>Works across coding, support, research, and data pipeline agents with universal adapters.</p>
+        </div>
+        <div class="bento-card">
+          <div class="bento-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <h3>Predictive</h3>
+          <p>Predicts likely failure classes from task description alone — before execution starts.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- How It Works -->
-  <section id="how-it-works">
-    <h2>How It Works</h2>
-    <div class="steps">
-      <div class="step"><div class="step-content"><h4>Agent executes a step</h4><p>Your agent runs normally. The SDK sends the partial trace to AIRAS after each step.</p></div></div>
-      <div class="step"><div class="step-content"><h4>Behavioral signals extracted</h4><p>AIRAS detects errors, loops, anomalous step counts, and context drift — without knowing the outcome.</p></div></div>
-      <div class="step"><div class="step-content"><h4>Pattern matched in &lt;5ms</h4><p>Qdrant HNSW vector search finds matching failure patterns from the antigen database.</p></div></div>
-      <div class="step"><div class="step-content"><h4>Intervention returned</h4><p>A targeted prompt-level instruction is returned: "verify parameters before editing" or "check if all tests pass before submitting."</p></div></div>
-      <div class="step"><div class="step-content"><h4>Agent self-corrects</h4><p>The SDK injects the intervention into the agent's next prompt. The agent catches the error before making it.</p></div></div>
-      <div class="step"><div class="step-content"><h4>System learns</h4><p>Outcome feeds back into efficacy tracking. Interventions that work get promoted; ones that don't get evolved.</p></div></div>
+  <section id="how-it-works" class="how-section">
+    <div class="container">
+      <span class="section-label">How It Works</span>
+      <h2>Six steps to agent immunity</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Agent executes a step</strong><p>SDK sends the partial trace to AIRAS after each action.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Behavioral signals extracted</strong><p>Errors, loops, anomalous step counts, context drift — detected without knowing the outcome.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Pattern matched in &lt;5ms</strong><p>Qdrant HNSW vector search finds matching failure patterns from the antigen database.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Intervention selected</strong><p>Contextual bandit picks the highest-efficacy intervention variant for this context.</p></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Agent self-corrects</strong><p>Intervention injected into the next prompt. The agent catches the error before making it.</p></div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-body"><strong>System learns</strong><p>Outcome feeds back. Interventions that work get promoted; ones that don't get evolved.</p></div></div>
+      </div>
     </div>
-
-    <div class="arch-diagram">┌─────────────┐     ┌──────────────┐     ┌─────────┐
-│ Agent (SDK) │────▶│  AIRAS API   │────▶│ Qdrant  │  &lt;5ms search
-└─────────────┘     │  (FastAPI)   │     └─────────┘
-                    │              │────▶│  Redis  │  cache + streams
-                    └──────┬───────┘     └─────────┘
-                           │
-                    ┌──────▼───────┐     ┌─────────┐
-                    │   Workers    │────▶│Postgres │  state + audit
-                    └──────────────┘     └─────────┘</div>
   </section>
 
   <!-- Install -->
-  <section id="install">
-    <h2>Get Started</h2>
-    <div class="install-block">
-      <h3>Install the SDK</h3>
-      <pre><code>uv add airas-sdk</code></pre>
-      <p style="color:var(--muted);margin-top:0.75rem;">Or with pip:</p>
-      <pre><code>pip install airas-sdk</code></pre>
-    </div>
-    <div class="install-block">
-      <h3>Pull the Docker Image</h3>
-      <pre><code>docker pull ghcr.io/yash1511-bogam/airas:0.2.1</code></pre>
-    </div>
-    <div class="install-block">
-      <h3>Integrate with LangGraph (3 lines)</h3>
-      <pre><code>from airas.sdk import AIRASClient, airas_middleware
+  <section id="install" class="install-section">
+    <div class="container">
+      <span class="section-label">Get Started</span>
+      <h2>Up and running in 60 seconds</h2>
+      <div class="code-blocks">
+        <div class="code-block">
+          <div class="code-header">Install the SDK</div>
+          <pre><code>uv add airas-sdk</code></pre>
+          <p class="code-alt">or <code>pip install airas-sdk</code></p>
+        </div>
+        <div class="code-block">
+          <div class="code-header">Integrate with LangGraph</div>
+          <pre><code><span class="kw">from</span> airas.sdk <span class="kw">import</span> AIRASClient, airas_middleware
 
-client = AIRASClient(base_url="http://localhost:8100")
-graph = airas_middleware(my_graph, client)  # done</code></pre>
-    </div>
-    <div class="install-block">
-      <h3>Deploy the Full Stack</h3>
-      <pre><code>git clone https://github.com/yash1511-bogam/airas.git
-cd airas
-docker compose up -d
-python -m airas.scripts.seed_antigens
-curl http://localhost:8100/health</code></pre>
+client = AIRASClient(base_url=<span class="str">"http://localhost:8100"</span>)
+graph = airas_middleware(my_graph, client)</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">Deploy the stack</div>
+          <pre><code>docker pull ghcr.io/yash1511-bogam/airas:0.2.1
+docker compose up -d</code></pre>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- API -->
-  <section>
-    <h2>API Reference</h2>
-    <div style="overflow-x:auto;margin-top:1.5rem;">
-      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
-        <thead><tr style="border-bottom:1px solid var(--border);text-align:left;">
-          <th style="padding:0.75rem;">Endpoint</th><th style="padding:0.75rem;">Method</th><th style="padding:0.75rem;">Purpose</th><th style="padding:0.75rem;">Latency</th>
-        </tr></thead>
-        <tbody>
-          <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.75rem;"><code>/v1/check</code></td><td>POST</td><td>Real-time immunity check</td><td>&lt;50ms</td></tr>
-          <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.75rem;"><code>/v1/traces</code></td><td>POST</td><td>Ingest completed trace</td><td>&lt;100ms</td></tr>
-          <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.75rem;"><code>/v1/antigens</code></td><td>GET</td><td>List failure patterns</td><td>&lt;200ms</td></tr>
-          <tr style="border-bottom:1px solid var(--border);"><td style="padding:0.75rem;"><code>/v2/predict</code></td><td>POST</td><td>Predict failures before execution</td><td>&lt;100ms</td></tr>
-          <tr><td style="padding:0.75rem;"><code>/v2/domains</code></td><td>GET</td><td>List domain adapters</td><td>&lt;50ms</td></tr>
-        </tbody>
-      </table>
+  <section class="api-section">
+    <div class="container">
+      <span class="section-label">API</span>
+      <h2>Simple, fast endpoints</h2>
+      <div class="api-table">
+        <div class="api-row api-header"><span>Endpoint</span><span>Purpose</span><span>Latency</span></div>
+        <div class="api-row"><span><code>POST /v1/check</code></span><span>Real-time immunity check</span><span>&lt;50ms</span></div>
+        <div class="api-row"><span><code>POST /v1/traces</code></span><span>Ingest completed trace</span><span>&lt;100ms</span></div>
+        <div class="api-row"><span><code>GET /v1/antigens</code></span><span>List failure patterns</span><span>&lt;200ms</span></div>
+        <div class="api-row"><span><code>POST /v2/predict</code></span><span>Predict failures pre-execution</span><span>&lt;100ms</span></div>
+      </div>
     </div>
   </section>
+</main>
 
-  <!-- Footer -->
-  <footer>
-    <p style="margin-bottom:0.5rem;">
-      <a href="https://github.com/yash1511-bogam/airas">GitHub</a> · 
-      <a href="https://pypi.org/project/airas-sdk/">PyPI</a> · 
-      <a href="mailto:hello@yashbogam.me">hello@yashbogam.me</a>
-    </p>
-    <p>MIT License · Built by <a href="https://yashbogam.me">Yash Bogam</a></p>
-  </footer>
-</div>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p>MIT License · Built by <a href="https://yashbogam.me">Yash Bogam</a></p>
+      <div class="footer-links">
+        <a href="https://github.com/yash1511-bogam/airas">GitHub</a>
+        <a href="https://pypi.org/project/airas-sdk/">PyPI</a>
+        <a href="mailto:hello@yashbogam.me">hello@yashbogam.me</a>
+      </div>
+    </div>
+  </div>
+</footer>
 </Base>

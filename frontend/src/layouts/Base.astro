@@ -7,29 +7,117 @@ const { title } = Astro.props;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AIRAS — Adaptive Immune Runtime for Agent Systems. Population-level failure prevention for AI agents." />
+  <meta name="description" content="AIRAS — Population-level failure prevention for AI agents. 52% prevention rate, 0% false positives, <50ms latency." />
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link href="https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-400-normal.woff2" rel="preload" as="font" type="font/woff2" crossorigin />
+  <style is:global>
+    @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-500-normal.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-600-normal.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Geist'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-700-normal.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Geist Mono'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/geist-mono@latest/latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0a0f;
-      --surface: #12121a;
-      --border: #1e1e2e;
-      --text: #e4e4e7;
-      --muted: #71717a;
+      --bg: #09090b;
+      --surface: #111113;
+      --surface-2: #18181b;
+      --border: #27272a;
+      --text: #fafafa;
+      --text-2: #a1a1aa;
       --accent: #6366f1;
-      --accent-light: #818cf8;
+      --accent-hover: #818cf8;
       --green: #22c55e;
+      --radius: 12px;
     }
-    html { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); }
-    body { line-height: 1.6; }
-    a { color: var(--accent-light); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    code { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; font-size: 0.875em; }
-    pre { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; overflow-x: auto; font-size: 0.875rem; line-height: 1.7; }
-    pre code { background: none; border: none; padding: 0; }
+    html { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--text-2); text-decoration: none; transition: color 0.15s; }
+    a:hover { color: var(--text); }
+    code { font-family: 'Geist Mono', monospace; font-size: 0.875em; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px; }
+    pre { font-family: 'Geist Mono', monospace; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; overflow-x: auto; font-size: 0.875rem; line-height: 1.8; }
+    pre code { background: none; border: none; padding: 0; font-size: inherit; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Nav */
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; }
+    .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.95rem; color: var(--text); }
+    .nav-links { display: flex; align-items: center; gap: 1.75rem; font-size: 0.875rem; }
+    .nav-gh { display: flex; align-items: center; gap: 0.4rem; }
+
+    /* Hero */
+    .hero { padding: 7rem 0 4rem; text-align: center; }
+    .hero h1 { font-size: clamp(2.5rem, 5.5vw, 3.75rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.1; margin-bottom: 1.5rem; }
+    .hero-sub { font-size: 1.125rem; color: var(--text-2); max-width: 580px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .hero-badges { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    .badge { font-size: 0.75rem; font-weight: 500; padding: 0.35rem 0.85rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text-2); }
+    .badge-green { border-color: rgba(34,197,94,0.3); color: var(--green); }
+    .hero-cta { display: flex; gap: 0.75rem; justify-content: center; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.4rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500; transition: all 0.15s; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); color: #fff; }
+    .btn-ghost { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+    .btn-ghost:hover { border-color: var(--text-2); color: var(--text); }
+
+    /* Stats */
+    .stats-section { padding: 3rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 1.75rem; font-weight: 700; color: var(--text); }
+    .stat-label { font-size: 0.8rem; color: var(--text-2); margin-top: 0.25rem; }
+
+    /* Sections */
+    .section-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); display: block; margin-bottom: 0.75rem; }
+    .features-section, .how-section, .install-section, .api-section { padding: 5rem 0; }
+    .features-section h2, .how-section h2, .install-section h2, .api-section h2 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2.5rem; }
+
+    /* Bento */
+    .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .bento-large { grid-column: span 2; }
+    .bento-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; transition: border-color 0.2s; }
+    .bento-card:hover { border-color: var(--accent); }
+    .bento-icon { color: var(--accent); margin-bottom: 1rem; }
+    .bento-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .bento-card p { font-size: 0.85rem; color: var(--text-2); line-height: 1.6; }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 1rem; max-width: 640px; }
+    .step { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .step-num { width: 1.75rem; height: 1.75rem; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+    .step-body strong { font-size: 0.9rem; display: block; margin-bottom: 0.2rem; }
+    .step-body p { font-size: 0.825rem; color: var(--text-2); margin: 0; }
+
+    /* Code blocks */
+    .code-blocks { display: grid; gap: 1rem; }
+    .code-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .code-header { font-size: 0.75rem; font-weight: 600; color: var(--text-2); padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em; }
+    .code-block pre { border: none; border-radius: 0; margin: 0; }
+    .code-alt { padding: 0.5rem 1.5rem 1rem; font-size: 0.8rem; color: var(--text-2); }
+    .kw { color: var(--accent-hover); }
+    .str { color: var(--green); }
+
+    /* API */
+    .api-table { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .api-row { display: grid; grid-template-columns: 1fr 1.5fr 0.5fr; padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; align-items: center; }
+    .api-row:last-child { border-bottom: none; }
+    .api-header { background: var(--surface); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-2); }
+
+    /* Footer */
+    footer { padding: 3rem 0; border-top: 1px solid var(--border); }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-2); }
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento { grid-template-columns: 1fr; }
+      .bento-large { grid-column: span 1; }
+      .api-row { grid-template-columns: 1fr; gap: 0.25rem; }
+      .api-header { display: none; }
+      .footer-inner { flex-direction: column; gap: 1rem; }
+      .nav-links a:not(.nav-gh) { display: none; }
+    }
   </style>
 </head>
 <body>
