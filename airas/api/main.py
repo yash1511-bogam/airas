@@ -32,6 +32,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Include v2 routes
+from airas.api.routes_v2 import router as v2_router
+app.include_router(v2_router)
+
 
 @app.get("/health")
 async def health():

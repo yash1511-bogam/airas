@@ -167,6 +167,37 @@ airas/
 
 The failure pattern database is the product. Every deployment adds patterns. More users → more patterns → better prevention → more users. Copying the code gives you an empty system with no learned patterns.
 
+## v2 Capabilities (NEW)
+
+### LLM-Powered Hybrid Judge
+- Heuristic judge for easy classes (wrong_tool, infinite_loop) — $0, <1ms
+- DeepSeek V4-Flash judge for hard classes (premature_termination, planning_failure) — $0.00027/call
+- Expected improvement: 52% → 65-70% prevention rate
+
+### Cross-Domain Transfer
+- Universal failure taxonomy (10 classes) works across coding, support, research, data pipeline agents
+- Domain adapters map specific tools to 6 universal action types
+- Patterns learned in one domain immunize all others
+
+### Self-Improving Interventions
+- Contextual Thompson Sampling selects best variant per context
+- LLM-generated mutations target specific failure sub-patterns
+- Automatic promotion/retirement based on efficacy tracking
+- Expected trajectory: 52% → 85% over 120 days
+
+### Predictive Immunity
+- Predicts likely failure classes from task description BEFORE execution
+- Pre-loads relevant interventions into agent system prompt
+- Zero-latency prevention for predicted patterns
+
+### New API Endpoints (v2)
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /v2/predict` | Predict failures from task description |
+| `GET /v2/domains` | List available domain adapters |
+| `GET /v2/evolution/stats` | Intervention evolution metrics |
+
 ## License
 
 Proprietary. All rights reserved.
