@@ -1,0 +1,147 @@
+name: CI/CD — Test & Publish to PyPI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]" --system
+
+      - name: Run import tests
+        run: |
+          python -c "
+          modules = [
+              'airas.models', 'airas.models.domain', 'airas.models.api',
+              'airas.extraction.alignment', 'airas.extraction.classifier',
+              'airas.extraction.abstraction', 'airas.intervention.templates',
+              'airas.replay.engine', 'airas.core.bandit', 'airas.core.predictor',
+              'airas.core.tolerance', 'airas.evolution', 'airas.domains',
+              'airas.domains.templates', 'airas.sdk.client', 'airas.sdk.langgraph',
+          ]
+          for m in modules:
+              __import__(m)
+              print(f'  ✅ {m}')
+          print(f'{len(modules)}/{len(modules)} imports passed')
+          "
+
+      - name: Run unit tests
+        run: |
+          python -c "
+          from airas.models import ExecutionStep, ExecutionTrace, FailureAntigen, FailureClass
+          from airas.extraction.alignment import find_divergence_point
+          from airas.extraction.classifier import classify_divergence
+          from airas.extraction.abstraction import extract_antigen
+          from airas.intervention.templates import get_intervention
+          from airas.replay.engine import judge_intervention_effectiveness
+          from airas.core.tolerance import ToleranceGate
+          from airas.core.bandit import ContextualBandit
+          from airas.core.predictor import FailurePredictor
+          from airas.domains import get_adapter
+          from airas.models.domain import ToleranceConfig
+          from airas.evolution import EvolutionEngine
+          import asyncio
+
+          steps_f = [
+              ExecutionStep(index=i, action=a, action_type=t, observation=o)
+              for i, (a, t, o) in enumerate([
+                  ('ls', 'navigate', 'src/'), ('find', 'search', 'utils.py'),
+                  ('open', 'navigate', '[code]'), ('edit bad', 'edit', 'Error'),
+                  ('edit bad2', 'edit', 'Error'), ('submit', 'submit', ''),
+              ])
+          ]
+          steps_s = [
+              ExecutionStep(index=i, action=a, action_type=t, observation=o)
+              for i, (a, t, o) in enumerate([
+                  ('ls', 'navigate', 'src/'), ('find', 'search', 'utils.py'),
+                  ('open', 'navigate', '[code]'), ('edit ok', 'edit', 'Updated'),
+                  ('pytest', 'run_test', 'passed'), ('submit', 'submit', ''),
+              ])
+          ]
+          ft = ExecutionTrace(trace_id='f1', instance_id='i1', steps=steps_f, success=False)
+          st = ExecutionTrace(trace_id='s1', instance_id='i1', steps=steps_s, success=True)
+
+          # Core pipeline
+          d = find_divergence_point(ft, st); assert d == 4
+          fc = classify_divergence(ft, d, st); assert fc == FailureClass.WRONG_TOOL
+          ag = extract_antigen(ft, d, fc); assert 'wrong_tool' in ag.signature
+          iv = get_intervention(ag); assert iv.applies_at_step == 4
+          p, _ = judge_intervention_effectiveness(ft, iv); assert p == True
+
+          # Tolerance
+          g = ToleranceGate(ToleranceConfig(max_interventions_per_trace=1))
+          a1, _ = g.should_intervene('t', 1, 0.5, 0.6, 'x'); g.record_intervention('t', 1)
+          a2, _ = g.should_intervene('t', 3, 0.5, 0.6, 'x')
+          assert a1 and not a2
+
+          # Bandit
+          b = ContextualBandit()
+          for _ in range(15):
+              b.update('wp', 'slow', False, 0.5, 'edit', True, 10)
+              b.update('wp', 'fast', True, 0.5, 'edit', True, 10)
+          arm = b.select('wp', 0.5, 'edit', True, 10)
+          assert arm and arm.intervention_id == 'fast'
+
+          # Predictor
+          pr = FailurePredictor()
+          assert len(pr.predict('edit import in file')) > 0
+
+          # Domains
+          for n in ['coding','support','research','data_pipeline']:
+              assert get_adapter(n).domain_name == n
+
+          # SDK graceful degradation
+          from airas.sdk.client import AIRASClient
+          async def t():
+              c = AIRASClient(base_url='http://127.0.0.1:1', timeout=0.05)
+              r = await c.check([steps_f[0]]); await c.close(); return not r.matched
+          assert asyncio.run(t())
+
+          # Evolution
+          eng = EvolutionEngine(min_trials=5)
+          eng.log_failure('x','c1'); eng.log_failure('x','c2'); eng.log_failure('x','c3')
+          assert eng.should_mutate('x', 0.4, 10)
+
+          # Serialization
+          import json
+          assert FailureAntigen.model_validate_json(ag.model_dump_json()).antigen_id == ag.antigen_id
+
+          print('All tests passed ✅')
+          "
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Build package
+        run: uv build
+
+      - name: Publish to PyPI
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: uv publish

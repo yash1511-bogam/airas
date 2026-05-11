@@ -73,12 +73,29 @@ v2 target: **85% prevention rate** via LLM judge + self-improving interventions 
 
 ## Quick Start
 
+### Install
+
+```bash
+uv add airas-sdk
+```
+
+Or with pip:
+```bash
+pip install airas-sdk
+```
+
+For the full server stack (Qdrant, Redis, Postgres):
+```bash
+uv add "airas-sdk[server]"
+```
+
 ### Run the Killer Experiment (no infrastructure needed)
 
 ```bash
+git clone https://github.com/yash1511-bogam/airas.git
 cd airas
 uv venv .venv && source .venv/bin/activate
-uv pip install -e .
+uv pip install -e ".[experiment]"
 python -m airas.experiment.runner
 ```
 
@@ -207,4 +224,4 @@ The failure pattern database is the product. Every deployment adds patterns. Mor
 
 ## License
 
-Proprietary. All rights reserved.
+MIT License

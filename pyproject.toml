@@ -1,29 +1,50 @@
 [project]
-name = "airas"
+name = "airas-sdk"
 version = "0.2.0"
+description = "Adaptive Immune Runtime for Agent Systems — population-level failure prevention for AI agents"
 requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Yash", email = "yash1511bogam@gmail.com"}]
+readme = "README.md"
+keywords = ["ai", "agents", "reliability", "runtime", "failure-prevention", "llm"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "pydantic>=2.0",
-    "fastapi>=0.110",
-    "uvicorn[standard]>=0.27",
-    "sqlalchemy[asyncio]>=2.0",
-    "asyncpg>=0.29",
-    "alembic>=1.13",
-    "redis[hiredis]>=5.0",
-    "qdrant-client>=1.7",
+    "httpx>=0.27",
+    "numpy>=1.24",
     "sentence-transformers>=2.2",
     "hdbscan>=0.8",
-    "numpy>=1.24",
     "scipy>=1.10",
     "rich>=13.0",
-    "httpx>=0.27",
-    "zstandard>=0.22",
-    "bcrypt>=4.1",
-    "datasets>=2.14",
 ]
 
 [project.optional-dependencies]
+server = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "qdrant-client>=1.7",
+    "redis[hiredis]>=5.0",
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncpg>=0.29",
+    "alembic>=1.13",
+    "zstandard>=0.22",
+    "bcrypt>=4.1",
+]
+experiment = ["datasets>=2.14"]
 dev = ["pytest>=7.0", "pytest-asyncio>=0.23"]
+
+[project.urls]
+Homepage = "https://github.com/yash1511-bogam/airas"
+Repository = "https://github.com/yash1511-bogam/airas"
+Issues = "https://github.com/yash1511-bogam/airas/issues"
 
 [build-system]
 requires = ["setuptools>=68.0"]
@@ -31,3 +52,4 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]
+include = ["airas*"]
