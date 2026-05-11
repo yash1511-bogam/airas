@@ -1,6 +1,6 @@
 # AIRAS — Adaptive Immune Runtime for Agent Systems
 
-> An immune system for AI agent swarms. Observes failure patterns across populations of agent executions, learns abstract failure signatures, and preemptively prevents those failures from recurring.
+> A runtime layer that observes failure patterns across populations of AI agent executions, learns abstract failure signatures, and preemptively prevents those failures from recurring.
 
 ## The Problem
 
@@ -14,17 +14,15 @@ AI agents in production fail in predictable, repeating patterns:
 
 ## The Solution
 
-AIRAS mirrors the human adaptive immune system:
+AIRAS learns from agent failures at the population level and prevents them preemptively:
 
-| Immune System | AIRAS |
-|---------------|-------|
-| Pathogen enters body | Agent starts failing |
-| Antigen presentation | Extract abstract failure pattern from trace |
-| T-cell classification | Categorize into failure archetype |
-| B-cell response | Generate intervention (prompt gate/check) |
-| Clonal selection | A/B test interventions via replay |
-| Immunological memory | Store pattern→intervention permanently |
-| Preemptive immunity | Match new executions BEFORE failure manifests |
+1. **Observe** — Collect execution traces from all agent runs
+2. **Extract** — Find where failed traces diverge from successful ones
+3. **Abstract** — Generalize specific failures into matchable patterns
+4. **Intervene** — Generate targeted prompt-level fixes for each pattern class
+5. **Test** — Validate interventions via replay before deploying
+6. **Remember** — Store pattern→intervention mappings permanently
+7. **Prevent** — Match new executions against known patterns BEFORE failure manifests
 
 ## Validated Results
 
@@ -65,16 +63,6 @@ Tested on 250 real SWE-bench agent trajectories:
                     └──────────────┘
 ```
 
-### The 7 Layers
-
-1. **Innate** — Circuit breakers, loop detection, schema validation (immediate, no learning)
-2. **Trace Ingestion** — Normalize execution steps into standard format
-3. **Antigen Extraction** — Find divergence point between failed and successful traces
-4. **Classification** — Categorize: wrong_tool, wrong_params, infinite_loop, premature_termination, retrieval_failure, planning_failure
-5. **Intervention Generation** — Select and parameterize template for the failure class
-6. **Clonal Selection** — Test interventions via replay, track efficacy with Thompson Sampling
-7. **Memory + Tolerance** — Permanent pattern store + over-correction prevention
-
 ## Quick Start
 
 ### Run the Killer Experiment (no infrastructure needed)
@@ -107,7 +95,7 @@ graph = airas_middleware(my_langgraph_app, client)  # done
 
 | Endpoint | Method | Purpose | Latency |
 |----------|--------|---------|---------|
-| `/v1/check` | POST | Real-time immunity check | <50ms |
+| `/v1/check` | POST | Real-time pattern check | <50ms |
 | `/v1/traces` | POST | Ingest completed trace | <100ms |
 | `/v1/antigens` | GET | List discovered patterns | <200ms |
 | `/v1/stats` | GET | Dashboard metrics | <200ms |
@@ -121,7 +109,7 @@ airas/
 ├── Dockerfile
 ├── pyproject.toml
 ├── airas/
-│   ├── models.py                   # Core Pydantic models (experiment)
+│   ├── models.py                   # Core Pydantic models
 │   ├── models/
 │   │   ├── domain.py              # Production domain models
 │   │   └── api.py                 # Request/response schemas
@@ -133,7 +121,7 @@ airas/
 │   ├── storage/
 │   │   ├── qdrant.py             # Vector DB layer
 │   │   └── redis_store.py        # Cache + streams
-│   ├── extraction/                # Antigen extraction pipeline
+│   ├── extraction/                # Pattern extraction pipeline
 │   │   ├── alignment.py          # Structural divergence detection
 │   │   ├── classifier.py         # Rule-based failure classification
 │   │   ├── abstraction.py        # Pattern abstraction
@@ -161,7 +149,7 @@ airas/
 | API | FastAPI | Async, <50ms p99, WebSocket support |
 | Vector DB | Qdrant | HNSW <5ms at 100K vectors, payload filtering |
 | State | PostgreSQL | Audit trail, efficacy tracking |
-| Cache | Redis | Hot antigen cache, async stream processing |
+| Cache | Redis | Hot pattern cache, async stream processing |
 | Embeddings | all-MiniLM-L6-v2 | 384-dim, local, free, fast |
 | Clustering | HDBSCAN | No K required, finds natural clusters |
 | SDK | httpx (async) | Non-blocking, graceful degradation |
@@ -171,20 +159,13 @@ airas/
 1. **No LLM calls in the hot path** — extraction and matching are deterministic and fast
 2. **Graceful degradation** — if AIRAS is down, agents run normally (SDK never blocks)
 3. **Two-phase matching** — embedding similarity (Qdrant) + condition predicates (code)
-4. **Behavioral signals only** — runtime matching doesn't know if trace will succeed; uses errors, loops, step anomalies
-5. **Tolerance layer** — max 3 interventions per trace, cooldown between them, auto-disable low-efficacy interventions
+4. **Behavioral signals only** — runtime matching uses errors, loops, step anomalies (not outcome)
+5. **Tolerance layer** — max 3 interventions per trace, cooldown, auto-disable low-efficacy interventions
 6. **Population-level learning** — every failure makes the system smarter for ALL users
 
 ## The Moat
 
-The failure pattern database is the product. Every deployment adds patterns. More users → more patterns → better immunity → more users. Copying the code gives you an empty immune system with no memory.
-
-## Research Foundation
-
-- Validated on SWE-bench (250 real agent trajectories)
-- Prior art: VIGIL (Dec 2025), ReCiSt (Jan 2026), AAAI 2026 immune-inspired detection
-- Differentiator: full adaptive loop (detect → abstract → generate fix → test → deploy → remember → preempt)
-- No existing product implements population-level preemptive immunity
+The failure pattern database is the product. Every deployment adds patterns. More users → more patterns → better prevention → more users. Copying the code gives you an empty system with no learned patterns.
 
 ## License
 
