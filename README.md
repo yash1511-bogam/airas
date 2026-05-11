@@ -84,6 +84,11 @@ Or with pip:
 pip install airas-sdk
 ```
 
+Or pull the Docker image:
+```bash
+docker pull ghcr.io/yash1511-bogam/airas:0.2.0
+```
+
 For the full server stack (Qdrant, Redis, Postgres):
 ```bash
 uv add "airas-sdk[server]"

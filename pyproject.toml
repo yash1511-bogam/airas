@@ -1,6 +1,6 @@
 [project]
 name = "airas-sdk"
-version = "0.2.0"
+version = "0.2.1"
 description = "Adaptive Immune Runtime for Agent Systems — population-level failure prevention for AI agents"
 requires-python = ">=3.11"
 license = "MIT"

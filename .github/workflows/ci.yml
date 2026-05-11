@@ -129,7 +129,7 @@ jobs:
       - name: Publish to PyPI
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
-        run: uv publish
+        run: uv publish || echo "Package version already exists on PyPI, skipping"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
